@@ -15,9 +15,12 @@ router.route('/')
     .get(controller.list)
     .post(controller.create);
 
+// router.param('id', controller.id)
+
+
 router.route('/:id')
-    .get(controller.read)
-    .put(controller.update)
+    .get(controller.id, controller.read)
+    .put(controller.id, controller.update)
     .delete(controller.delete);
 
 

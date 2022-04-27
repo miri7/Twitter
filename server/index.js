@@ -1,6 +1,6 @@
 const express = require('express')
 const api = require('./api/v1')
-const morgan = require('morgan');
+
 const logger = require('./config/logger')
 
 
@@ -20,9 +20,16 @@ app.use((req, res,next) => {
   })
 })
 
-app.use((err, req, res, next) => {
-  const {statusCode = 500, message = '', level = 'error'} = err
-  logger[level](message);
+app.use((err, req, res) => {
+  const { message = ''} = err
+  let {statusCode = 500} = err
+
+  if(err?.name === "ValidationError"){
+    statusCode = 422;
+  }
+  console.log(JSON.stringify(err,null,2))
+
+
   res.status(statusCode);
   res.json( { 
     message,
